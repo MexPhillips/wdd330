@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory Management | Sleep Outside</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <style>
+      /* Inventory Management Styles */
+      .inventory-page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      .inventory-header {
+        margin-bottom: 3rem;
+      }
+
+      .inventory-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: #333;
+      }
+
+      .inventory-count-badge {
+        display: inline-block;
+        background-color: #007bff;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: bold;
+        margin-left: 1rem;
+      }
+
+      /* Form Styles */
+      .inventory-form-section {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #333;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        color: #333;
+        font-size: 1rem;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        font-family: inherit;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .form-group.has-error input,
+      .form-group.has-error select,
+      .form-group.has-error textarea {
+        border-color: #d32f2f;
+        background-color: #ffebee;
+      }
+
+      .error-message {
+        color: #d32f2f;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        display: block;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: bold;
+      }
+
+      .btn-primary {
+        background-color: #28a745;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #218838;
+      }
+
+      .btn-primary:focus {
+        outline: 2px solid #218838;
+        outline-offset: 2px;
+      }
+
+      .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background-color: #5a6268;
+      }
+
+      .btn-secondary:focus {
+        outline: 2px solid #5a6268;
+        outline-offset: 2px;
+      }
+
+      .btn-cancel-edit {
+        display: none;
+      }
+
+      /* Alerts */
+      .alert {
+        padding: 1rem 1.5rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        font-weight: 500;
+      }
+
+      .alert--success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+      }
+
+      .alert--error {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+      }
+
+      /* Inventory List */
+      .inventory-list-section {
+        margin-top: 3rem;
+      }
+
+      .inventory-list-header {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #333;
+      }
+
+      .inventory-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .inventory-item {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .inventory-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .inventory-item__image {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        background-color: #f5f5f5;
+      }
+
+      .inventory-item__image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .inventory-item__info {
+        padding: 1rem;
+      }
+
+      .inventory-item__name {
+        font-size: 1.1rem;
+        margin: 0 0 0.5rem;
+        color: #333;
+      }
+
+      .inventory-item__price {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #d32f2f;
+        margin: 0 0 0.5rem;
+      }
+
+      .inventory-item__description {
+        font-size: 0.9rem;
+        color: #666;
+        margin: 0.5rem 0;
+        line-height: 1.4;
+      }
+
+      .inventory-item__date {
+        font-size: 0.85rem;
+        color: #999;
+        margin: 0.5rem 0 0;
+      }
+
+      .inventory-item__actions {
+        display: flex;
+        gap: 0.5rem;
+        padding: 1rem;
+        border-top: 1px solid #eee;
+      }
+
+      .btn-edit,
+      .btn-delete,
+      .btn-view {
+        flex: 1;
+        padding: 0.5rem;
+        font-size: 0.875rem;
+      }
+
+      .btn-edit {
+        background-color: #007bff;
+        color: white;
+      }
+
+      .btn-edit:hover {
+        background-color: #0056b3;
+      }
+
+      .btn-delete {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .btn-delete:hover {
+        background-color: #c82333;
+      }
+
+      .btn-view {
+        background-color: #17a2b8;
+        color: white;
+      }
+
+      .btn-view:hover {
+        background-color: #138496;
+      }
+
+      .inventory-empty {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #666;
+      }
+
+      .inventory-empty p {
+        font-size: 1.1rem;
+        margin: 0.5rem 0;
+      }
+
+      /* Modal */
+      .modal {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .modal__content {
+        background: white;
+        border-radius: 8px;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal__close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #999;
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal__close:hover {
+        color: #333;
+      }
+
+      .modal__body {
+        padding: 2rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: start;
+      }
+
+      .modal__image {
+        width: 100%;
+        border-radius: 4px;
+      }
+
+      .modal__details h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: #333;
+      }
+
+      .modal__price,
+      .modal__category,
+      .modal__date {
+        margin-bottom: 0.75rem;
+        line-height: 1.6;
+      }
+
+      .modal__description {
+        margin: 1.5rem 0;
+      }
+
+      .modal__description strong {
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .modal__description p {
+        line-height: 1.6;
+        color: #666;
+      }
+
+      .modal__actions {
+        padding: 1.5rem 2rem;
+        border-top: 1px solid #eee;
+      }
+
+      .modal__close-btn {
+        width: 100%;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .inventory-page {
+          padding: 1rem;
+        }
+
+        .inventory-header h1 {
+          font-size: 1.8rem;
+        }
+
+        .inventory-count-badge {
+          display: block;
+          margin-left: 0;
+          margin-top: 0.5rem;
+        }
+
+        .inventory-form-section {
+          padding: 1.5rem 1rem;
+        }
+
+        .inventory-list {
+          grid-template-columns: 1fr;
+        }
+
+        .inventory-item__actions {
+          flex-direction: column;
+        }
+
+        .btn-edit,
+        .btn-delete,
+        .btn-view {
+          width: 100%;
+        }
+
+        .modal__body {
+          grid-template-columns: 1fr;
+        }
+
+        .form-actions {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="divider">
+      <div class="logo">
+        <img src="/images/noun_Tent_2517.svg" alt="tent image for logo" />
+        <a href="/index.html">Sleep<span class="highlight">Outside</span></a>
+      </div>
+      <nav class="header-nav">
+        <a href="/index.html">Home</a>
+        <a href="/cart/index.html" class="cart-link">Cart</a>
+      </nav>
+    </header>
+
+    <main class="inventory-page">
+      <!-- Page Header -->
+      <div class="inventory-header">
+        <h1>
+          Inventory Management
+          <span class="inventory-count-badge">
+            <span class="inventory-count">0</span> products
+          </span>
+        </h1>
+        <p>Add, edit, and manage your product inventory</p>
+      </div>
+
+      <!-- Form Section -->
+      <section class="inventory-form-section" aria-labelledby="form-title">
+        <h2 class="form-title" id="form-title">Add New Product</h2>
+
+        <form class="inventory-form" novalidate>
+          <!-- Product Name -->
+          <div class="form-group">
+            <label for="product-name">
+              Product Name
+              <span aria-label="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="product-name"
+              name="product-name"
+              placeholder="e.g., Coleman Tent - 4 Person"
+              required
+              aria-required="true"
+            />
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label for="category">
+              Category
+              <span aria-label="required">*</span>
+            </label>
+            <select id="category" name="category" required aria-required="true">
+              <option value="">-- Select a category --</option>
+              <option value="tents">Tents</option>
+              <option value="backpacks">Backpacks</option>
+              <option value="sleeping-bags">Sleeping Bags</option>
+            </select>
+          </div>
+
+          <!-- Price -->
+          <div class="form-group">
+            <label for="price">
+              Price ($)
+              <span aria-label="required">*</span>
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              placeholder="99.99"
+              step="0.01"
+              min="0"
+              required
+              aria-required="true"
+            />
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label for="description">
+              Description
+              <span aria-label="required">*</span>
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Enter a detailed product description..."
+              required
+              aria-required="true"
+            ></textarea>
+          </div>
+
+          <!-- Image URL -->
+          <div class="form-group">
+            <label for="image-url">
+              Image URL
+              <span aria-label="required">*</span>
+            </label>
+            <input
+              type="url"
+              id="image-url"
+              name="image-url"
+              placeholder="https://example.com/image.jpg"
+              required
+              aria-required="true"
+            />
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Add Product</button>
+            <button type="button" class="btn btn-secondary btn-cancel-edit">
+              Cancel Edit
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Inventory List Section -->
+      <section class="inventory-list-section" aria-labelledby="inventory-title">
+        <h2 class="inventory-list-header" id="inventory-title">Product Inventory</h2>
+        <div class="inventory-list" role="region" aria-live="polite">
+          <!-- Inventory items will be inserted here -->
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      &copy;2025 ⛺ SleepOutside ⛺ WDD 330 ⛺ BYU-Idaho for BYU-Pathway
+      Worldwide Online
+    </footer>
+
+    <script type="module" src="/js/inventoryMain.mjs"></script>
+  </body>
+</html>
