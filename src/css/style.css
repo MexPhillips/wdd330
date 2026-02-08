@@ -24,6 +24,8 @@ body {
   font-family: var(--font-body);
   font-size: var(--font-base);
   color: var(--dark-grey);
+  background-color: #ffffff;
+  line-height: 1.6;
 }
 
 img {
@@ -33,7 +35,10 @@ img {
 header {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, var(--secondary-color), #3d4408);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  align-items: center;
 }
 
 p {
@@ -57,11 +62,26 @@ p {
 
 .logo a {
   text-decoration: none;
-  color: var(--font-body);
+  color: white;
+  font-weight: bold;
+  transition: opacity 0.3s ease;
+}
+
+.logo a:hover {
+  opacity: 0.85;
 }
 
 .hero {
   position: relative;
+  margin-bottom: 2rem;
+}
+
+.hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 400px;
+  object-fit: cover;
 }
 
 .hero .logo {
@@ -138,29 +158,45 @@ button {
   top: 1rem;
   left: 0;
   right: 0;
-  line-height: 1.3;
-  width: 100%;
-  background-color: var(--dark-grey);
-  color: var(--light-grey);
-  opacity: 0.8;
+  line-height: 1.4;
+  width: 90%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: rgba(48, 48, 48, 0.9);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .mission p {
-  margin: 0 auto;
-  width: 50%;
+  margin: 0;
   text-align: center;
+  font-size: 1.05rem;
 }
 
 .products {
   margin-top: 2rem;
   padding: 1rem;
+  background-color: #fafafa;
+  border-radius: 8px;
+}
+
+.products h2 {
+  font-family: var(--font-headline);
+  color: var(--secondary-color);
+  font-size: 1.8em;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid var(--primary-color);
 }
 
 .product-list {
-  display: flex;
-  flex-flow: row wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
   list-style-type: none;
-  justify-content: center;
+  justify-items: center;
 }
 
 .product-list a {
@@ -171,10 +207,27 @@ button {
 /* Styles for product lists */
 .product-card {
   flex: 1 1 45%;
-  margin: 0.25em;
-  padding: 0.5em;
+  margin: 0.5em;
+  padding: 1em;
   border: 1px solid var(--light-grey);
   max-width: 250px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.product-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+.product-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
 }
 
 .product-card h2,
@@ -185,10 +238,45 @@ button {
 
 .card__brand {
   font-size: var(--small-font);
+  color: var(--secondary-color);
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 .card__name {
   font-size: 1em;
+  color: var(--dark-grey);
+  font-weight: 600;
+}
+
+.product-card__price {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--tertiary-color);
+}
+
+.view-details-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.view-details-btn:hover {
+  background-color: var(--tertiary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.view-details-btn:active {
+  transform: translateY(0);
 }
 
 /* End product list card */
@@ -259,23 +347,30 @@ button {
 
 footer {
   font-size: var(--small-font);
-  padding: 1em;
+  padding: 1.5em;
+  background-color: var(--dark-grey);
+  color: var(--light-grey);
+  text-align: center;
+  margin-top: 2rem;
+  border-top: 3px solid var(--primary-color);
 }
 /* ===== SEARCH STYLES ===== */
 
 .search-container {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 2rem 1.5rem;
+  background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 100%);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
   margin-bottom: 2rem;
-  border: 1px solid var(--light-grey);
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .search-container h2 {
   font-family: var(--font-headline);
   color: var(--secondary-color);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-size: 1.8em;
+  letter-spacing: 0.5px;
 }
 
 .search-form {
