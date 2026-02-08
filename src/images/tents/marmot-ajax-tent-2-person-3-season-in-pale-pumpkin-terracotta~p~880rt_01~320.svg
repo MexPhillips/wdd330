@@ -1,0 +1,31 @@
+<svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tentGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8A662;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A0522D;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="320" height="320" fill="#f0f0f0"/>
+  
+  <!-- Tent shape -->
+  <path d="M 160 60 L 80 200 L 240 200 Z" fill="url(#tentGradient2)" stroke="#666" stroke-width="2"/>
+  
+  <!-- Tent door -->
+  <path d="M 140 200 L 140 120 L 180 120 L 180 200 Z" fill="#FFB347" stroke="#333" stroke-width="1" opacity="0.8"/>
+  
+  <!-- Door zipper line -->
+  <line x1="160" y1="120" x2="160" y2="200" stroke="#333" stroke-width="2"/>
+  
+  <!-- Window -->
+  <circle cx="130" cy="150" r="15" fill="#87CEEB" stroke="#333" stroke-width="1" opacity="0.6"/>
+  <circle cx="190" cy="150" r="15" fill="#87CEEB" stroke="#333" stroke-width="1" opacity="0.6"/>
+  
+  <!-- Text label -->
+  <text x="160" y="260" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">
+    Marmot Ajax 2P
+  </text>
+  <text x="160" y="285" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#666">
+    Pale Pumpkin/Terracotta
+  </text>
+</svg>
