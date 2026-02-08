@@ -9,7 +9,7 @@ import { qs } from "./utils.mjs";
 class ProductListRenderer {
   constructor(category = "tents") {
     this.category = category;
-    this.dataSource = new ProductData(category);
+    this.dataSource = new ProductData();
   }
 
   /**
@@ -17,7 +17,7 @@ class ProductListRenderer {
    */
   async render() {
     try {
-      const products = await this.dataSource.getData();
+      const products = await this.dataSource.getData(this.category);
       this.displayProductList(products);
     } catch (error) {
       console.error("Error loading products:", error);
