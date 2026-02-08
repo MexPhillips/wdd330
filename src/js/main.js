@@ -66,6 +66,11 @@ function displayFeaturedProducts(allProducts) {
     clone.querySelector(".product-image").src = product.Image;
     clone.querySelector(".product-image").alt = product.Name;
     
+    // Set the category from the product object
+    const details = clone.querySelector(".view-details-btn");
+    details.dataset.id = product.Id;
+    details.dataset.category = product.category;
+    
     productList.appendChild(clone);
   });
 }
@@ -81,7 +86,14 @@ async function getAllProducts(productData) {
     const backpacks = await productData.getData("backpacks");
     const sleepingBags = await productData.getData("sleeping-bags");
 
-    return [...tents, ...backpacks, ...sleepingBags];
+    // Add category info to each product for tracking
+    const allProducts = [
+      ...tents.map(p => ({ ...p, category: "tents" })),
+      ...backpacks.map(p => ({ ...p, category: "backpacks" })),
+      ...sleepingBags.map(p => ({ ...p, category: "sleeping-bags" }))
+    ];
+
+    return allProducts;
   } catch (error) {
     console.error("Failed to fetch all products:", error);
     return [];

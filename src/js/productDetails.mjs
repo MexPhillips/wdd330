@@ -4,11 +4,12 @@
  */
 
 import ProductData from "./ProductData.mjs";
-import { qs } from "./utils.mjs";
+import { qs, setLocalStorage, getLocalStorage } from "./utils.mjs";
 
 class ProductDetailsRenderer {
   constructor() {
     this.detailsContainer = qs(".product-details");
+    this.currentProduct = null;
   }
 
   /**
@@ -18,8 +19,8 @@ class ProductDetailsRenderer {
    */
   async loadProductDetails(productId, category) {
     try {
-      const dataSource = new ProductData(category);
-      const product = await dataSource.findProductById(productId);
+      const dataSource = new ProductData();
+      const product = await dataSource.findProductById(productId, category);
 
       if (product) {
         this.displayProductDetails(product);
@@ -45,6 +46,9 @@ class ProductDetailsRenderer {
       console.error("Product details template not found");
       return;
     }
+
+    // Store the current product for add to cart functionality
+    this.currentProduct = product;
 
     // Clone template content
     const clone = template.content.cloneNode(true);
@@ -76,6 +80,43 @@ class ProductDetailsRenderer {
     // Clear previous content and insert new details
     this.detailsContainer.innerHTML = "";
     this.detailsContainer.appendChild(clone);
+  }
+
+  /**
+   * Add the currently displayed product to cart
+   */
+  addCurrentProductToCart() {
+    if (!this.currentProduct) {
+      console.error("No product currently displayed");
+      alert("Please select a product first");
+      return;
+    }
+
+    const cart = getLocalStorage("so-cart") || [];
+    cart.push(this.currentProduct);
+    setLocalStorage("so-cart", cart);
+
+    // Show confirmation message
+    const message = document.createElement("div");
+    message.className = "cart-notification";
+    message.textContent = `${this.currentProduct.Name} added to cart!`;
+    message.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4caf50;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 4px;
+      z-index: 9999;
+      animation: slideIn 0.3s ease-out;
+    `;
+    document.body.appendChild(message);
+
+    // Remove message after 3 seconds
+    setTimeout(() => {
+      message.remove();
+    }, 3000);
   }
 
   /**

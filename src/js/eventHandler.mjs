@@ -15,10 +15,12 @@ class EventHandler {
    * Setup all event listeners with event delegation
    */
   setupEventListeners() {
-    // Event delegation for View Details buttons
+    // Event delegation for View Details buttons and Add to Cart
     document.addEventListener("click", (e) => {
       if (e.target.closest(".view-details-btn")) {
         this.handleViewDetailsClick(e);
+      } else if (e.target.closest(".add-to-cart-btn")) {
+        this.handleAddToCartClick(e);
       }
     });
   }
@@ -39,6 +41,15 @@ class EventHandler {
     } else {
       console.error("Missing product ID or category data");
     }
+  }
+
+  /**
+   * Handle Add to Cart button click
+   * @param {Event} event - Click event
+   */
+  handleAddToCartClick(event) {
+    event.preventDefault();
+    this.detailsRenderer.addCurrentProductToCart();
   }
 }
 
