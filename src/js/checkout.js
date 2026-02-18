@@ -3,14 +3,17 @@
  * Handles checkout page initialization, cart display, and form integration
  */
 
-import { getLocalStorage } from "./utils.mjs";
+import CartHeader from "./cartHeader.mjs";
+import CartManager from "./cartManager.mjs";
 import { CheckoutFormHandler } from "./checkoutFormHandler.mjs";
+
+const cartManager = new CartManager();
 
 /**
  * Display cart items in the order summary
  */
 function displayCartItems() {
-  const cartItems = getLocalStorage("so-cart") || [];
+  const cartItems = cartManager.getCartItems();
   const cartList = document.querySelector(".order-summary .cart-items");
 
   if (!cartList) return;
@@ -28,13 +31,16 @@ function displayCartItems() {
   cartItems.forEach((item) => {
     const li = document.createElement("li");
     li.className = "cart-item";
+    const quantity = item.Quantity || 1;
+    const itemTotal = (parseFloat(item.FinalPrice || 0) * quantity).toFixed(2);
     li.innerHTML = `
       <div class="item-info">
         <h4>${item.Name}</h4>
         <p class="item-color">${item.Colors?.[0]?.ColorName || "Standard"}</p>
+        <p class="item-qty">Qty: ${quantity}</p>
       </div>
       <div class="item-price">
-        <span class="item-cost">$${item.FinalPrice.toFixed(2)}</span>
+        <span class="item-cost">$${itemTotal}</span>
       </div>
     `;
     cartList.appendChild(li);
@@ -45,13 +51,13 @@ function displayCartItems() {
  * Calculate and display order totals
  */
 function calculateTotals() {
-  const cartItems = getLocalStorage("so-cart") || [];
+  const cartItems = cartManager.getCartItems();
 
-  // Calculate subtotal
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + (item.FinalPrice || 0),
-    0
-  );
+  // Calculate subtotal with quantities
+  const subtotal = cartItems.reduce((sum, item) => {
+    const quantity = item.Quantity || 1;
+    return sum + (parseFloat(item.FinalPrice || 0) * quantity);
+  }, 0);
 
   // Fixed shipping cost
   const shipping = subtotal > 0 ? 10.0 : 0;
