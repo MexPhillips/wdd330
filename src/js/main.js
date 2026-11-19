@@ -18,9 +18,8 @@ async function initializePage() {
     const productData = new ProductData();
     const allProducts = await getAllProducts(productData);
 
-    // Render the product list
-    const productListRenderer = new ProductListRenderer("tents");
-    await productListRenderer.render();
+    // Display featured products from all categories mixed together
+    displayFeaturedProducts(allProducts);
 
     // Initialize search functionality
     new SearchEventHandler(allProducts);
@@ -32,6 +31,43 @@ async function initializePage() {
   } catch (error) {
     console.error("Failed to initialize product page:", error);
   }
+}
+
+/**
+ * Display featured products on home page
+ * @param {Array} allProducts - All products from all categories
+ */
+function displayFeaturedProducts(allProducts) {
+  const productList = document.querySelector(".product-list");
+  if (!productList) return;
+  
+  // Clear existing content
+  productList.innerHTML = "";
+  
+  // Limit to first 12 products for featured display
+  const featuredProducts = allProducts.slice(0, 12);
+  
+  // Create product cards
+  const template = document.querySelector(".product-template");
+  if (!template) return;
+  
+  featuredProducts.forEach((product) => {
+    const clone = template.content.cloneNode(true);
+    
+    const card = clone.querySelector(".product-card");
+    card.dataset.id = product.Id;
+    
+    clone.querySelector(".card__brand").textContent =
+      product.Brand?.Name || "Unknown Brand";
+    clone.querySelector(".card__name").textContent =
+      product.NameWithoutBrand || product.Name;
+    clone.querySelector(".product-card__price").textContent =
+      `$${product.FinalPrice.toFixed(2)}`;
+    clone.querySelector(".product-image").src = product.Image;
+    clone.querySelector(".product-image").alt = product.Name;
+    
+    productList.appendChild(clone);
+  });
 }
 
 /**
