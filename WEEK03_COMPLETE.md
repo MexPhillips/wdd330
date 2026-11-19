@@ -299,7 +299,7 @@ localStorage.getItem("so-inventory-sleeping-bags")
     "Brand": { "Name": "User Added" },
     "Colors": [{ "ColorName": "Standard", "ColorCode": "01" }],
     "category": "tents",
-    "createdAt": "2025-02-08T10:30:00.000Z"
+    "createdAt": "2026-02-08T10:30:00.000Z"
   }
 ]
 ```

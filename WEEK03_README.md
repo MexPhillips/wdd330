@@ -327,7 +327,7 @@ localStorage.getItem("so-inventory-sleeping-bags") // Array of sleeping bag prod
   "FinalPrice": 249.99,
   "DescriptionHtmlSimple": "Spacious tent with...",
   "category": "tents",
-  "createdAt": "2025-02-08T10:30:00.000Z"
+  "createdAt": "2026-02-08T10:30:00.000Z"
 }
 ```
 
