@@ -75,7 +75,8 @@ class ProductListRenderer {
 
     // Set data attributes for event delegation
     clone.querySelector(".view-details-btn").dataset.id = product.Id;
-    clone.querySelector(".view-details-btn").dataset.category = this.category;
+    clone.querySelector(".view-details-btn").dataset.category =
+      product.category || this.category;
 
     // Convert clone to HTML string
     const tempDiv = document.createElement("div");

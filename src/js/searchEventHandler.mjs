@@ -7,11 +7,13 @@
 import { qs } from "./utils.mjs";
 import ProductSearch from "./productSearch.mjs";
 import SearchRenderer from "./searchRenderer.mjs";
+import ProductListRenderer from "./productList.mjs";
 
 export class SearchEventHandler {
   constructor(allProducts = []) {
     this.productSearch = new ProductSearch(allProducts);
     this.searchRenderer = new SearchRenderer();
+    this.productListRenderer = new ProductListRenderer();
     this.debounceTimer = null;
     this.debounceDelay = 300; // ms
     this.setupEventListeners();
@@ -37,11 +39,9 @@ export class SearchEventHandler {
       );
     }
 
-    // Search button
-    if (this.searchRenderer.searchButton) {
-      this.searchRenderer.searchButton.addEventListener("click", () =>
-        this.handleSearchSubmit()
-      );
+    const searchForm = qs(".search-form");
+    if (searchForm) {
+      searchForm.addEventListener("submit", (e) => this.handleSearchSubmit(e));
     }
 
     // Clear button
@@ -133,18 +133,17 @@ export class SearchEventHandler {
    * @param {KeyboardEvent} e - Keyboard event
    */
   handleSearchKeydown(e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      this.handleSearchSubmit();
-    } else if (e.key === "Escape") {
+    if (e.key === "Escape") {
       this.handleClearSearch();
     }
   }
 
   /**
    * Handle search form submission
+   * @param {SubmitEvent} e - Form submission event
    */
-  handleSearchSubmit() {
+  handleSearchSubmit(e) {
+    e.preventDefault();
     const searchTerm = this.searchRenderer.getSearchValue();
     this.performSearch(searchTerm);
     this.searchRenderer.hideSuggestions();
@@ -228,7 +227,7 @@ export class SearchEventHandler {
    */
   handleSearchResultsUpdated(e) {
     const { products, searchTerm } = e.detail;
-    // Additional processing if needed
+    this.productListRenderer.displayProductList(products);
     console.log(`Search results updated: ${products.length} products for "${searchTerm}"`);
   }
 
