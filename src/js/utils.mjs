@@ -2,8 +2,15 @@
 export function qs(selector, parent = document) {
   return parent.querySelector(selector);
 }
+
+// wrapper for querySelectorAll...returns all matching elements
+export function qsAll(selector, parent = document) {
+  return parent.querySelectorAll(selector);
+}
+
 // or a more concise version if you are into that sort of thing:
 // export const qs = (selector, parent = document) => parent.querySelector(selector);
+// export const qsAll = (selector, parent = document) => parent.querySelectorAll(selector);
 
 // retrieve data from localstorage
 export function getLocalStorage(key) {
