@@ -8,6 +8,9 @@
   </head>
 
   <body>
+    <!-- Screen reader announcements -->
+    <div class="sr-announcement sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+    
     <header class="divider">
       <div class="logo">
         <img src="/images/noun_Tent_2517.svg" alt="tent image for logo" />
@@ -77,8 +80,58 @@
         </li>
       </template>
 
+      <!-- Search Section -->
       <section class="products">
-        <h2>Top Products</h2>
+        <div class="search-container">
+          <h2>Find Your Gear</h2>
+          <form class="search-form" role="search">
+            <div class="search-input-group">
+              <input
+                type="text"
+                class="search-input"
+                placeholder="Search by product name, brand, or type..."
+                aria-label="Search products"
+                aria-describedby="search-help"
+              />
+              <button type="submit" class="search-btn" aria-label="Search">
+                <span>Search</span>
+              </button>
+              <button type="button" class="clear-search-btn" aria-label="Clear search">
+                ✕
+              </button>
+            </div>
+            
+            <!-- Search suggestions (autocomplete) -->
+            <div class="search-suggestions" role="region" aria-label="Search suggestions">
+              <!-- Suggestions will be inserted here -->
+            </div>
+
+            <!-- Search help text -->
+            <p id="search-help" class="search-help">
+              Tip: Search by product name (e.g., "Tent"), brand (e.g., "Marmot"), or type (e.g., "Backpack")
+            </p>
+          </form>
+
+          <!-- Search results info -->
+          <div class="search-info">
+            <p class="search-results-count" role="status"></p>
+            <p class="search-price-range" role="status"></p>
+          </div>
+
+          <!-- Search filters -->
+          <div class="search-filters" role="group" aria-label="Product filters">
+            <div class="filter-buttons-group">
+              <!-- Filter buttons will be inserted here -->
+            </div>
+          </div>
+
+          <!-- No results message -->
+          <div class="no-search-results" role="alert" style="display: none;">
+            No products found. Try a different search.
+          </div>
+        </div>
+
+        <h2>Products</h2>
         <ul class="product-list" role="list">
           <!-- Products will be dynamically inserted here -->
         </ul>
