@@ -4,12 +4,14 @@
  */
 
 import ProductData from "./ProductData.mjs";
-import { qs, setLocalStorage, getLocalStorage } from "./utils.mjs";
+import CartManager from "./cartManager.mjs";
+import { qs } from "./utils.mjs";
 
 class ProductDetailsRenderer {
   constructor() {
     this.detailsContainer = qs(".product-details");
     this.currentProduct = null;
+    this.cartManager = new CartManager();
   }
 
   /**
@@ -77,6 +79,12 @@ class ProductDetailsRenderer {
       }
     }
 
+    // Add click handler to add to cart button
+    const addToCartBtn = clone.querySelector(".add-to-cart-btn");
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener("click", () => this.addCurrentProductToCart());
+    }
+
     // Clear previous content and insert new details
     this.detailsContainer.innerHTML = "";
     this.detailsContainer.appendChild(clone);
@@ -92,9 +100,7 @@ class ProductDetailsRenderer {
       return;
     }
 
-    const cart = getLocalStorage("so-cart") || [];
-    cart.push(this.currentProduct);
-    setLocalStorage("so-cart", cart);
+    this.cartManager.addToCart(this.currentProduct);
 
     // Show confirmation message
     const message = document.createElement("div");
