@@ -4,6 +4,7 @@
  * Coordinates product list rendering, search, and event handling
  */
 
+import CartHeader from "./cartHeader.mjs";
 import ProductListRenderer from "./productList.mjs";
 import EventHandler from "./eventHandler.mjs";
 import SearchEventHandler from "./searchEventHandler.mjs";
